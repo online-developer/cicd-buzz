@@ -1,0 +1,10 @@
+
+[cicd-buzz/buzz] $ python generator.py
+[cicd-buzz] $ virtualenv venv
+[cicd-buzz] $ source venv/bin/activate
+(venv) [cicd-buzz] $ pip install flake8 pytest pytest-cov
+(venv) [cicd-buzz] $ pip freeze > requirements.txt
+(venv) [cicd-buzz] $ pip install -r requirements.txt
+(venv) [cicd-buzz] $ python -m pytest -v tests/test_generator.py
+(venv) [cicd-buzz] $ python -m pytest -v --cov buzz/
+
