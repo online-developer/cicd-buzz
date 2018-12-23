@@ -7,4 +7,7 @@
 (venv) [cicd-buzz] $ pip install -r requirements.txt
 (venv) [cicd-buzz] $ python -m pytest -v tests/test_generator.py
 (venv) [cicd-buzz] $ python -m pytest -v --cov buzz/
-
+(venv) [cicd-buzz] $ python app.py
+(venv) [cicd-buzz] $ docker build -t cicd-buzz .
+(venv) [cicd-buzz] $ docker run -p 5000:5000 --rm -it cicd-buzz
+(venv) [cicd-buzz] $ docker run -p 5000:5000 --rm -it <YOUR_DOCKER_USERNAME>/cicd-buzz
