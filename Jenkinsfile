@@ -3,7 +3,7 @@ pipeline {
 	stages {
 		stage('Test') {
 			steps {
-				python -m pytest -v --cov buzz/
+				sh 'python -m pytest -v --cov buzz/'
 			}
 		}
 	}
