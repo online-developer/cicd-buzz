@@ -3,12 +3,13 @@
 from __future__ import print_function
 from random import sample
 
-buzz = ('continuous testing', 'continuous integration', 'continous deployment', 'continous improvement', 'devops')
-adjectives = ('complete', 'mordern', 'self-service', 'integrated', 'end-to-end')
+buzz = ('continuous testing', 'continuous integration', 'continuous deployment', 'continuous improvement', 'devops')
+adjectives = ('complete', 'modern', 'self-service', 'integrated', 'end-to-end')
 adverbs = ('remarkably', 'enormously', 'substaintially', 'significantly', 'seriously')
 verbs = ('accelerates', 'improves', 'enhances', 'revamps', 'boosts')
 
-def sampling(words, n = 1):
+
+def sampling(words, n=1):
     result = sample(words, n)
     if n == 1:
         return result[0]
