@@ -2,7 +2,7 @@ pipeline
 {
     agent any
     environment {
-	VIRTUAL_ENV = "${env.WORKSPACE}\venv"
+	VIRTUAL_ENV = "${env.WORKSPACE}/venv"
     }
 
     stages
