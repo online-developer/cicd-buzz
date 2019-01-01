@@ -53,7 +53,7 @@ pipeline
 		steps {
 			bat """
 				call .venv/Scripts/activate
-				flake8 --exit-zero --statistics --tee --output-file=tests/flake8.log --ignore=E501 buzz
+				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log buzz
 			"""
 			step([$class: 'WarningsPublisher',
 			  parserConfigurations: [[
