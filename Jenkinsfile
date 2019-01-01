@@ -1,6 +1,11 @@
 pipeline
 {
     agent any
+    options {
+	buildDiscarder(
+		// Only keep the 10 most recent builds
+		logRotator(numToKeepStr:'10'))
+    }
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
 	UNIT_TEST_REPORT = "${env.WORKSPACE}\\tests\\unit-test.xml"
@@ -50,13 +55,18 @@ pipeline
 			bat """
 				if exist "tests/unit-test.xml" del "tests/unit-test.xml" 
 				call .venv/Scripts/activate
-				python -m pytest -v --junitxml="tests/unit-test.xml" 
+				python -m pytest -v --junitxml="tests/unit-test.xml" --cov-report html:"tests/coverage.html" --cov=buzz
 			"""
 			echo "Unit Tests Finished"
 		}
 		post {
 			always {
-				junit keepLongStdio: true, testResults: "tests/unit-test.xml" 
+				junit keepLongStdio: true, testResults: "tests/unit-test.xml"
+				publishHTML target: [
+					reportDir: 'tests',
+					reportFiles: 'coverage.html',
+					reportName: 'Coverage Report - Unit Test'
+				]
 			}
 		}
 	}
