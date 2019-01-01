@@ -5,8 +5,6 @@ pipeline
 	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
     }
 
-    try {
-
     stages
     {
     	stage('Checkout') {
@@ -68,13 +66,5 @@ pipeline
 		}
         }
     }
-
-   }
-   catch (e) {
-	// If there was an exception thrown, the build failed
-	currentBuild.result = "FAILED"
-	throw e
-   }
-
 }
 
