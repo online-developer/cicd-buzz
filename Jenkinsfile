@@ -60,7 +60,6 @@ pipeline
 		post {
 			always {
 				recordIssues 
-					enabledForFailure: true, 
 					tools: [
 						[pattern: 'tests/flake8.log', 
 						tool: [$class: 'Pep8']]
