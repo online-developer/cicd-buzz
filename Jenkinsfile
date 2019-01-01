@@ -55,7 +55,7 @@ pipeline
 				call .venv/Scripts/activate
 				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log buzz
 			"""
-			step([$class: 'WarningsPublisher',
+			step([$class: 'warnings-ng',
 			  parserConfigurations: [[
 			    parserName: 'Pep8',
 			    pattern: 'tests/flake8.log'
