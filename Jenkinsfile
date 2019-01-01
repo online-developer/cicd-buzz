@@ -33,7 +33,7 @@ pipeline
 			echo "Build Stage Starting"
 			echo env.PATH
 			bat """
-				SET PATH=%PATH%
+				echo %PATH%
 				if exist 'venv' rd /q /s 'venv'
 				virtualenv venv
 				pip install --upgrade pip
