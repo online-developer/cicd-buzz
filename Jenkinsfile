@@ -45,7 +45,7 @@ pipeline
 		steps {
 			echo "Unit Tests Starting"
 			bat """
-				venv\Scripts\activate
+				venv\\Scripts\\activate
 				python -m pytest -v
 			"""
 			echo "Unit Tests Finished"
