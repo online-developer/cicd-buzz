@@ -33,8 +33,8 @@ pipeline
 			echo "Build Stage Starting"
 			bat """
 				if exist "%VIRTUAL_ENV%" rd /q /s "%VIRTUAL_ENV%"
-				virtualenv "%VIRTUAL_ENV%"
-				"%VIRTUAL_ENV%\\Scripts\\activate"
+				virtualenv venv
+				venv\\Scripts\\activate
 				pip install --upgrade pip
 				pip install -r requirements.txt
 				pip --version
