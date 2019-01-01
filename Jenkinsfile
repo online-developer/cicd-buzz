@@ -33,7 +33,8 @@ pipeline
 			echo env.PATH
 			bat """
 				SET PATH=%PATH%
-				echo %PATH%
+				python --version
+				java -version
 				if exist 'venv' rd /q /s 'venv'
 				virtualenv venv
 				pip install --upgrade pip
