@@ -71,7 +71,7 @@ pipeline
 		post {
 			always {
 				junit keepLongStdio: true, testResults: "tests/unit-test.xml"
-				warnings parserConfigurations: [[parserName: 'Pep8', pattern: 'tests/flake8.log']], unstableTotalAll: '0', usePreviousBuildAsReference: true
+				warnings consoleParsers: [[parserName: 'Pep8', pattern: 'tests/flake8.log']]
 				publishHTML target: [
 					reportDir: 'tests',
 					reportFiles: 'coverage.html',
