@@ -57,15 +57,6 @@ pipeline
 				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log %APPLICATION_ROOT%
 			"""
 		}
-		post {
-			always {
-				recordIssues 
-					tools: [
-						[pattern: 'tests/flake8.log', 
-						tool: [$class: 'Pep8']]
-						]
-			}
-		}
 	}
 	stage('Unit Test') {
 		steps {
@@ -77,29 +68,18 @@ pipeline
 			"""
 			echo "Unit Tests Finished"
 		}
-		post {
-			always {
-				junit keepLongStdio: true, testResults: "tests/unit-test.xml"
-				publishHTML target: [
-					reportDir: 'tests',
-					reportFiles: 'coverage.html',
-					reportName: 'Coverage Report - Unit Test'
-				]
-			}
+	}
+	post {
+		always {
+			junit keepLongStdio: true, testResults: "tests/unit-test.xml"
+			recordIssues tools: [[pattern: 'tests/flake8.log', tool: [$class: 'Pep8']]]
+			publishHTML target: [
+				reportDir: 'tests',
+				reportFiles: 'coverage.html',
+				reportName: 'Coverage Report - Unit Test'
+			]
 		}
 	}
-	stage('Deploy')
-	{
-		steps {
-			echo "Deploy"
-		}
-	}
-        stage('Integration tests')
-        {
-		steps {
-			echo "Integration tests"
-		}
-        }
     }
 }
 
