@@ -55,6 +55,7 @@ pipeline
 			bat """
 				%VIRTUAL_ENV_ACTIVATOR%
 				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log %APPLICATION_ROOT%
+				flake8_junit tests/flake8.log tests/flake8.xml
 			"""
 		}
 	}
@@ -71,7 +72,7 @@ pipeline
 		post {
 			always {
 				junit keepLongStdio: true, testResults: "tests/unit-test.xml"
-				warnings consoleParsers: [[parserName: 'Pep8', pattern: 'tests/flake8.log']]
+				junit keepLongStdio: true, testResults: "tests/flake8.xml"
 				publishHTML target: [
 					reportDir: 'tests',
 					reportFiles: 'coverage.html',
