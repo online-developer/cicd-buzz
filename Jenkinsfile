@@ -8,44 +8,56 @@ pipeline
     stages
     {
     	stage('Checkout') {
-		echo "Checkout Source Code"
-		checkout scm
+		steps {
+			echo "Checkout Source Code"
+			checkout scm
+		}
 	}
  	stage('Print Info') {
-		echo "Branch Name: ${env.BRANCH_NAME}"
-		echo "BUILD_NUMBER : ${env.BUILD_NUMBER}"
-		echo "BUILD_ID : ${env.BUILD_ID}"
-		echo "JOB_NAME: ${env.JOB_NAME}"
-		echo "BUILD_TAG : ${env.BUILD_TAG}"
-		echo "EXECUTOR_NUMBER : ${env.EXECUTOR_NUMBER}"
-		echo "NODE_NAME: ${env.NODE_NAME}"
-		echo "NODE_LABELS : ${env.NODE_LABELS}"
-		echo "WORKSPACE : ${env.WORKSPACE}"
-		echo "JENKINS_HOME : ${env.JENKINS_HOME}"
+		steps {
+			echo "Branch Name: ${env.BRANCH_NAME}"
+			echo "BUILD_NUMBER : ${env.BUILD_NUMBER}"
+			echo "BUILD_ID : ${env.BUILD_ID}"
+			echo "JOB_NAME: ${env.JOB_NAME}"
+			echo "BUILD_TAG : ${env.BUILD_TAG}"
+			echo "EXECUTOR_NUMBER : ${env.EXECUTOR_NUMBER}"
+			echo "NODE_NAME: ${env.NODE_NAME}"
+			echo "NODE_LABELS : ${env.NODE_LABELS}"
+			echo "WORKSPACE : ${env.WORKSPACE}"
+			echo "JENKINS_HOME : ${env.JENKINS_HOME}"
+		}
 	}
 	stage('Build') {
-		echo "Build Stage Starting"
-		echo env.PATH
-		if (fileExists('venv')) {
-			bat 'rmdir venv /Q /S'
+		steps {
+			echo "Build Stage Starting"
+			echo env.PATH
+			if (fileExists('venv')) {
+				bat 'rmdir venv /Q /S'
+			}
+			bat """
+				virtualenv venv
+				pip install --upgrade pip
+				pip install -r requirements.txt 
+			"""
 		}
-		bat """
-	        	virtualenv venv
-                	pip install --upgrade pip
-	        	pip install -r requirements.txt 
-		"""
 	}
 	stage('Unit tests')
 	{
-		echo "Unit tests"
+		steps {
+			echo "Unit tests"
+		}
 	}
 	stage('Deploy')
 	{
-		echo "Deploy"
+		steps {
+			echo "Deploy"
+		}
 	}
         stage('Integration tests')
         {
-		echo "Integration tests"
+		steps {
+			echo "Integration tests"
+		}
         }
     }
 }
