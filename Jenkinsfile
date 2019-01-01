@@ -3,7 +3,6 @@ pipeline
     agent any
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}/venv"
-	SET Path=%PATH%
     }
 
     stages
