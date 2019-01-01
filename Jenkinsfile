@@ -31,10 +31,8 @@ pipeline
 		steps {
 			echo "Build Stage Starting"
 			echo env.PATH
-			if (fileExists('venv')) {
-				bat 'rmdir venv /Q /S'
-			}
 			bat """
+				if exist 'venv' rd /q /s 'venv'
 				virtualenv venv
 				pip install --upgrade pip
 				pip install -r requirements.txt 
