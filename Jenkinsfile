@@ -7,8 +7,9 @@ pipeline
 		logRotator(numToKeepStr:'10'))
     }
     environment {
-	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
-	UNIT_TEST_REPORT = "${env.WORKSPACE}\\tests\\unit-test.xml"
+	VIRTUAL_ENV = "${env.WORKSPACE}/.venv"
+	VIRTUAL_ENV_ACTIVATOR = "call .venv/Scripts/activate"
+	UNIT_TEST_REPORT = "${env.WORKSPACE}/tests/unit-test.xml"
 	APPLICATION_ROOT = "buzz"
     }
 
@@ -40,7 +41,7 @@ pipeline
 			bat """
 				if exist ".venv" rd /q /s ".venv"
 				virtualenv .venv
-				call .venv/Scripts/activate
+				%VIRTUAL_ENV_ACTIVATOR%
 				pip install --upgrade pip
 				pip install -r requirements.txt
 				pip --version
@@ -52,8 +53,8 @@ pipeline
 	stage('Static Code Analysis') {
 		steps {
 			bat """
-				call .venv/Scripts/activate
-				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log buzz
+				%VIRTUAL_ENV_ACTIVATOR%
+				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log %APPLICATION_ROOT%
 			"""
 			step([$class: 'warnings-ng',
 			  parserConfigurations: [[
@@ -70,7 +71,7 @@ pipeline
 			echo "Unit Tests Starting"
 			bat """
 				if exist "tests/unit-test.xml" del "tests/unit-test.xml" 
-				call .venv/Scripts/activate
+				%VIRTUAL_ENV_ACTIVATOR%
 				python -m pytest -v --junitxml="tests/unit-test.xml" --cov-report html:"tests/coverage.html" --cov=%APPLICATION_ROOT%
 			"""
 			echo "Unit Tests Finished"
