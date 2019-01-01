@@ -3,7 +3,7 @@ pipeline
     agent any
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
-	UNIT_TEST_REPORT = "${env.WORKSPACE}\\report"
+	UNIT_TEST_REPORT = "${env.WORKSPACE}\\tests\\unit-test.xml"
     }
 
     stages
@@ -33,7 +33,7 @@ pipeline
 			echo "Build Stage Starting"
 			bat """
 				if exist 'venv' rd /q /s 'venv'
-				if not exist '%UNIT_TEST_REPORT%' mkdir '%UNIT_TEST_REPORT%'
+				if exist '%UNIT_TEST_REPORT%' del '%UNIT_TEST_REPORT%'
 				virtualenv venv
 				'%VIRTUAL_ENV%\\Scripts\\activate'
 				pip install --upgrade pip
@@ -50,7 +50,7 @@ pipeline
 			echo "Unit Tests Starting"
 			bat """
 				'%VIRTUAL_ENV%\\Scripts\\activate'
-				python -m pytest -v --junitxml='%UNIT_TEST_REPORT%\\unit-test.xml'
+				python -m pytest -v --junitxml='%UNIT_TEST_REPORT%'
 			"""
 			echo "Unit Tests Finished"
 		}
