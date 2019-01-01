@@ -5,6 +5,8 @@ pipeline
 	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
     }
 
+    try {
+
     stages
     {
     	stage('Checkout') {
@@ -36,6 +38,8 @@ pipeline
 				venv\\Scripts\\activate
 				pip install --upgrade pip
 				pip install -r requirements.txt 
+				pip --version
+				pip list
 			"""
 			echo "Build Stage Finsihed"
 		}
@@ -64,5 +68,13 @@ pipeline
 		}
         }
     }
+
+   }
+   catch (e) {
+	// If there was an exception thrown, the build failed
+	currentBuild.result = "FAILED"
+	throw e
+   }
+
 }
 
