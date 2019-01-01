@@ -31,7 +31,7 @@ pipeline
 		steps {
 			echo "Build Stage Starting"
 			echo env.PATH
-			sh """
+			bat """
 				if exist 'venv' rd /q /s 'venv'
 				virtualenv venv
 				pip install --upgrade pip
