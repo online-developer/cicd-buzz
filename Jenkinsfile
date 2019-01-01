@@ -2,7 +2,7 @@ pipeline
 {
     agent any
     environment {
-	VIRTUAL_ENV = "${env.WORKSPACE}/venv"
+	VIRTUAL_ENV = "${env.WORKSPACE}\venv"
     }
 
     stages
@@ -32,22 +32,23 @@ pipeline
 			echo "Build Stage Starting"
 			echo env.PATH
 			bat """
-				SET PATH=%PATH%
 				if exist 'venv' rd /q /s 'venv'
-				python --version
-				pip --version
-				/*
 				virtualenv venv
 				pip install --upgrade pip
 				pip install -r requirements.txt 
-				*/
 			"""
+			echo "Build Stage Finsihed"
 		}
 	}
-	stage('Unit tests')
+	stage('Unit Test')
 	{
 		steps {
-			echo "Unit tests"
+			echo "Unit Tests Starting"
+			bat """
+				venv\Scripts\activate
+				python -m pytest -v
+			"""
+			echo "Unit Tests Finished"
 		}
 	}
 	stage('Deploy')
