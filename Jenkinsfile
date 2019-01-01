@@ -3,6 +3,7 @@ pipeline
     agent any
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
+	UNIT_TEST_REPORT = "${env.WORKSPACE}\\report"
     }
 
     stages
@@ -32,6 +33,7 @@ pipeline
 			echo "Build Stage Starting"
 			bat """
 				if exist 'venv' rd /q /s 'venv'
+				if not exist '%UNIT_TEST_REPORT%' mkdir %UNIT_TEST_REPORT%
 				virtualenv venv
 				'%VIRTUAL_ENV%\\Scripts\\activate'
 				pip install --upgrade pip
@@ -48,9 +50,14 @@ pipeline
 			echo "Unit Tests Starting"
 			bat """
 				'%VIRTUAL_ENV%\\Scripts\\activate'
-				python -m pytest -v
+				python -m pytest -v --junitxml='%UNIT_TEST_REPORT%\\unit-test.xml'
 			"""
 			echo "Unit Tests Finished"
+		}
+		post {
+			always {
+				junit keepLongStdio: true, testResults: '%UNIT_TEST_REPORT%\\unit-test.xml'
+			}
 		}
 	}
 	stage('Deploy')
