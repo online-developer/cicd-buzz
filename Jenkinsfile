@@ -9,6 +9,7 @@ pipeline
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}\\venv"
 	UNIT_TEST_REPORT = "${env.WORKSPACE}\\tests\\unit-test.xml"
+	APPLICATION_ROOT = "buzz"
     }
 
     stages
@@ -48,14 +49,30 @@ pipeline
 			echo "Build Stage Finsihed"
 		}
 	}
-	stage('Unit Test')
-	{
+	stage('Sytle Check') {
+		steps {
+			bat """
+				if exist "tests/flake8.log" del "tests/flake8.log"
+				call .venv/Scripts/activate
+				flake8 --statistics %APPLICATION_ROOT% > tests/flake8.log && type tests/flake8.log
+			"""
+			step([$class: 'WarningsPublisher',
+			  parserConfigurations: [[
+			    parserName: 'Pep8',
+			    pattern: 'tests/flake8.log'
+			  ]],
+			  unstableTotalAll: '0',
+			  usePreviousBuildAsReference: true
+			])
+		}
+	}
+	stage('Unit Test') {
 		steps {
 			echo "Unit Tests Starting"
 			bat """
 				if exist "tests/unit-test.xml" del "tests/unit-test.xml" 
 				call .venv/Scripts/activate
-				python -m pytest -v --junitxml="tests/unit-test.xml" --cov-report html:"tests/coverage.html" --cov=buzz
+				python -m pytest -v --junitxml="tests/unit-test.xml" --cov-report html:"tests/coverage.html" --cov=%APPLICATION_ROOT%
 			"""
 			echo "Unit Tests Finished"
 		}
