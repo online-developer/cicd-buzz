@@ -49,7 +49,7 @@ pipeline
 			echo "Build Stage Finsihed"
 		}
 	}
-	stage('Sytle Check') {
+	stage('Static Code Analysis') {
 		steps {
 			bat """
 				call .venv/Scripts/activate
