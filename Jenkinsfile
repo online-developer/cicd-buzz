@@ -73,7 +73,6 @@ pipeline
     post {
 	always {
 		junit keepLongStdio: true, testResults: "tests/unit-test.xml"
-		recordIssues tools: [[pattern: 'tests/flake8.log', tool: [$class: 'Pep8']]]
 		publishHTML target: [
 			reportDir: 'tests',
 			reportFiles: 'coverage.html',
