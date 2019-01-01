@@ -52,9 +52,9 @@ pipeline
 	stage('Sytle Check') {
 		steps {
 			bat """
-				if exist "tests/flake8.log" del "tests/flake8.log"
 				call .venv/Scripts/activate
-				flake8 --statistics buzz > tests/flake8.log && type tests/flake8.log
+				flake8 --version
+				flake8 --statistics buzz > tests/flake8.log
 			"""
 			step([$class: 'WarningsPublisher',
 			  parserConfigurations: [[
