@@ -34,7 +34,7 @@ pipeline
 			bat """
 				if exist "%VIRTUAL_ENV%" rd /q /s "%VIRTUAL_ENV%"
 				virtualenv venv
-				venv\\Scripts\\activate
+				venv\\Scripts\\activate.bat
 				pip install --upgrade pip
 				pip install -r requirements.txt
 				pip --version
