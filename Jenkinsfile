@@ -35,7 +35,7 @@ pipeline
 				if exist 'venv' rd /q /s 'venv'
 				if exist '%UNIT_TEST_REPORT%' del '%UNIT_TEST_REPORT%'
 				virtualenv venv
-				'%VIRTUAL_ENV%\\Scripts\\activate'
+				"%VIRTUAL_ENV%\\Scripts\\activate"
 				pip install --upgrade pip
 				pip install -r requirements.txt
 				pip --version
@@ -49,7 +49,7 @@ pipeline
 		steps {
 			echo "Unit Tests Starting"
 			bat """
-				'%VIRTUAL_ENV%\\Scripts\\activate'
+				"%VIRTUAL_ENV%\\Scripts\\activate"
 				python -m pytest -v --junitxml='%UNIT_TEST_REPORT%'
 			"""
 			echo "Unit Tests Finished"
