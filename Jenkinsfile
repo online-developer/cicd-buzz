@@ -34,7 +34,6 @@ pipeline
 				if exist 'venv' rd /q /s 'venv'
 				virtualenv venv
 				venv\\Scripts\\activate
-				SET PATH=venv;%PATH%
 				pip install --upgrade pip
 				pip install -r requirements.txt 
 			"""
@@ -47,7 +46,6 @@ pipeline
 			echo "Unit Tests Starting"
 			bat """
 				venv\\Scripts\\activate
-				SET PATH=venv;%PATH%
 				python -m pytest -v
 			"""
 			echo "Unit Tests Finished"
