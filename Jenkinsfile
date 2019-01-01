@@ -35,7 +35,6 @@ pipeline
 				if exist ".venv" rd /q /s ".venv"
 				virtualenv .venv
 				call .venv/Scripts/activate
-				python -version
 				pip install --upgrade pip
 				pip install -r requirements.txt
 				pip --version
@@ -49,14 +48,15 @@ pipeline
 		steps {
 			echo "Unit Tests Starting"
 			bat """
+				if exist "tests/unit-test.xml" del "tests/unit-test.xml" 
 				call .venv/Scripts/activate
-				python -m pytest -v --junitxml="%UNIT_TEST_REPORT%"
+				python -m pytest -v --junitxml="tests/unit-test.xml" 
 			"""
 			echo "Unit Tests Finished"
 		}
 		post {
 			always {
-				junit keepLongStdio: true, testResults: "%UNIT_TEST_REPORT%"
+				junit keepLongStdio: true, testResults: "tests/unit-test.xml" 
 			}
 		}
 	}
