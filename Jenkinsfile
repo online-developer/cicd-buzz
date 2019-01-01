@@ -33,7 +33,7 @@ pipeline
 			echo "Build Stage Starting"
 			bat """
 				if exist 'venv' rd /q /s 'venv'
-				if not exist '%UNIT_TEST_REPORT%' mkdir %UNIT_TEST_REPORT%
+				if not exist '%UNIT_TEST_REPORT%' mkdir '%UNIT_TEST_REPORT%'
 				virtualenv venv
 				'%VIRTUAL_ENV%\\Scripts\\activate'
 				pip install --upgrade pip
