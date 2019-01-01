@@ -3,6 +3,7 @@ pipeline
     agent any
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}/venv"
+	PATH = "{env.PATH}"
     }
 
     stages
@@ -32,6 +33,7 @@ pipeline
 			echo "Build Stage Starting"
 			echo env.PATH
 			bat """
+				SET PATH=%PATH%
 				if exist 'venv' rd /q /s 'venv'
 				virtualenv venv
 				pip install --upgrade pip
