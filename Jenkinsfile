@@ -54,7 +54,7 @@ pipeline
 			bat """
 				call .venv/Scripts/activate
 				flake8 --version
-				flake8 --statistics buzz > tests/flake8.log
+				flake8 --statistics --tee --output-file=tests/flake8.log buzz
 			"""
 			step([$class: 'WarningsPublisher',
 			  parserConfigurations: [[
