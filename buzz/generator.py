@@ -3,12 +3,10 @@
 from __future__ import print_function
 from random import sample
 
-
 buzz = ('continuous testing', 'continuous integration', 'continuous deployment', 'continuous improvement', 'devops')
 adjectives = ('complete', 'modern', 'self-service', 'integrated', 'end-to-end')
 adverbs = ('remarkably', 'enormously', 'substaintially', 'significantly', 'seriously')
 verbs = ('accelerates', 'improves', 'enhances', 'revamps', 'boosts')
-
 
 
 def sampling(words, n=1):
@@ -18,12 +16,10 @@ def sampling(words, n=1):
     return result
 
 
-
 def generate_buzz():
     buzz_terms = sampling(buzz, 2)
     phrase = ' '.join([sampling(adjectives), buzz_terms[0], sampling(adverbs), sampling(verbs), buzz_terms[1]])
     return phrase.title()
-
 
 
 if __name__ == '__main__':
