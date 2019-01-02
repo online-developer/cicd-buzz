@@ -52,8 +52,8 @@ pipeline
 	stage('Static Code Analysis') {
 		steps {
 			bat """
+				if exist "tests/flake8.log" del "tests/flake8.log"
 				%VIRTUAL_ENV_ACTIVATOR%
-				if exist "tests/flake8.log" del "tests/flake8.log" 
 				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log %APPLICATION_ROOT%
 			"""
 		}
