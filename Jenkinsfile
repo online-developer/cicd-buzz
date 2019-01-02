@@ -9,11 +9,6 @@ pipeline
     environment {
 	VIRTUAL_ENV = "${env.WORKSPACE}/.venv"
 	VIRTUAL_ENV_ACTIVATOR = "call .venv/Scripts/activate"
-	TEST_DIR = "tests"
-	CODE_COVERAGE_REPORT_NAME = "coverage.html"
-	UNIT_TEST_REPORT = "${TEST_DIR}/unit-test.xml"
-	CODE_COVERAGE_REPORT = "${TEST_DIR}/${CODE_COVERAGE_REPORT_NAME}"
-	STATIC_CODE_ANALYSIS_REPORT = "${TEST_DIR}/flake8.log"
 	APPLICATION_ROOT = "buzz"
     }
 
@@ -58,7 +53,8 @@ pipeline
 		steps {
 			bat """
 				%VIRTUAL_ENV_ACTIVATOR%
-				flake8 --statistics --exit-zero --tee --output-file=%STATIC_CODE_ANALYSIS_REPORT% %APPLICATION_ROOT%
+				if exist "tests/flake8.log" del "tests/flake8.log" 
+				flake8 --statistics --exit-zero --tee --output-file=tests/flake8.log
 			"""
 		}
 	}
@@ -66,9 +62,9 @@ pipeline
 		steps {
 			echo "Unit Tests Starting"
 			bat """
-				if exist "%UNIT_TEST_REPORT%" del "%UNIT_TEST_REPORT%" 
+				if exist "tests/unit-test.xml" del "tests/unit-test.xml" 
 				%VIRTUAL_ENV_ACTIVATOR%
-				python -m pytest -v --junitxml="%UNIT_TEST_REPORT%" --cov-report html:"%CODE_COVERAGE_REPORT%" --cov=%APPLICATION_ROOT%
+				python -m pytest -v --junitxml="tests/unit-test.xml" --cov-report html:"tests/coverage.html" --cov=%APPLICATION_ROOT%
 			"""
 			echo "Unit Tests Finished"
 		}
@@ -76,11 +72,11 @@ pipeline
     }
     post {
 	always {
-		junit keepLongStdio: true, testResults: "${UNIT_TEST_REPORT}"
-		recordIssues enabledForFailure: true, tool: pep8(pattern: '${STATIC_CODE_ANALYSIS_REPORT}')
+		junit keepLongStdio: true, testResults: "tests/unit-test.xml"
+		recordIssues enabledForFailure: true, tool: pep8(pattern: 'tests/flake8.log')
 		publishHTML target: [
-			reportDir: '${TEST_DIR}',
-			reportFiles: '${CODE_COVERAGE_REPORT_NAME}',
+			reportDir: 'tests',
+			reportFiles: 'coverage.html',
 			reportName: 'Coverage Report - Unit Test'
 		]
 	}
